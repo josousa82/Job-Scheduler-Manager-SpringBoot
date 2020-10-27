@@ -2,6 +2,7 @@ package com.jobmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jobmanager.jobs.EmailJob;
 import lombok.Data;
 import org.quartz.*;
 
@@ -122,11 +123,5 @@ public class JobDescriptor {
                .setBcc((List<String>) jobDetail.getJobDataMap().get("bcc"))
                .setTriggerDescriptors(triggerDescriptors);
     }
-
-
-
-
-
-
 
 }

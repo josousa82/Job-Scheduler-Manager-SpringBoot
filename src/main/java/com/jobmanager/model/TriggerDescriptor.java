@@ -1,9 +1,8 @@
 package com.jobmanager.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.util.*;
 
@@ -14,14 +13,13 @@ import java.time.ZoneId;
 import java.util.TimeZone;
 
 import static java.util.UUID.randomUUID;
-import static org.springframework.util.StringUtils.isEmpty;
-
 
 /**
  * Created by sousaJ on 27/10/2020
  * in package - com.jobmanager.model
  **/
 
+@Slf4j
 @Data
 public class TriggerDescriptor {
 
@@ -59,6 +57,9 @@ public class TriggerDescriptor {
     public Trigger buildTrigger(){
         if(!StringUtils.isEmpty(cron)){
             if(!CronExpression.isValidExpression(cron)){
+
+                log.error("Cron not valid " + cron);
+
                 throw new IllegalArgumentException("Provided expression " + cron + " is not a valid cron expression.");
             }
             return TriggerBuilder.newTrigger()
@@ -69,8 +70,12 @@ public class TriggerDescriptor {
                     .usingJobData("cron", cron)
                     .build();
         } else if (!StringUtils.isEmpty(fireTime)){
+
+            log.warn("Cron in TriggerDescriptor is empty, but fireTime is populated");
+
             JobDataMap jobDataMap = new JobDataMap();
             jobDataMap.put("fireTime", fireTime);
+
             return TriggerBuilder.newTrigger()
                     .withIdentity(buildName(), group)
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule()
@@ -80,7 +85,10 @@ public class TriggerDescriptor {
                     .build();
         }
 
-        return null;
+        log.error("Unsupported trigger descriptor " + this);
+        log.error("Trigger descriptor name was not build");
+
+        throw new IllegalStateException("Unsupported trigger descriptor " + this);
     }
 
     public static  TriggerDescriptor buildDescriptor(Trigger trigger){

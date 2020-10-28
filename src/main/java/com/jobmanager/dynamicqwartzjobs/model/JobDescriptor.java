@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jobmanager.dynamicqwartzjobs.jobs.EmailJob;
 import lombok.Data;
-import org.quartz.*;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Trigger;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -27,7 +30,7 @@ public class JobDescriptor {
     @NotEmpty
     private String messageBody;
 
-    Class<? extends Job> jobClass;
+//    Class<? extends Job> jobClass;
 
     @NotEmpty
     private List<String> to;

@@ -4,10 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DynamicQwartzJobsApplication {
+public class ApplicationInit {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DynamicQwartzJobsApplication.class, args);
+
+		SpringApplication.run(ApplicationInit.class, args);
 	}
+
+
 
 }

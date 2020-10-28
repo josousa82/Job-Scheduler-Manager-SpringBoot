@@ -29,7 +29,8 @@ public class EmailJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.info("job triggered to send emails");
         JobDataMap map = jobExecutionContext.getMergedJobDataMap();
-
+        sendEmail(map);
+        log.info("Job complete");
     }
 
     private void sendEmail(JobDataMap map) {

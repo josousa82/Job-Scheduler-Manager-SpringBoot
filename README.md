@@ -1,17 +1,14 @@
-# Template-Repository
-
-One Paragraph of project description goes here
+# Job Scheduler Manager
+Dynamic quartz scheduler with SpringBoot and Quartz 
 
 ### Build Status
 
 #### Code Quality
-* [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4c04b09260a4462da1efd8abd560d74b)](https://www.codacy.com/manual/josousa82/Template-Repository/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josousa82/Template-Repository&amp;utm_campaign=Badge_Grade)
+* [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ee4157bda60d4dc38e1416defc6b48d1)](https://www.codacy.com/gh/josousa82/Job-Scheduler-Manager-SpringBoot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josousa82/Job-Scheduler-Manager-SpringBoot&amp;utm_campaign=Badge_Grade)
 
 #### CircleCI
-* [![<CircleCI>](https://circleci.com/gh/josousa82/Template-Repository.svg?style=shield)](https://circleci.com/gh/josousa82/Template-Repository)
+* [![<CircleCI>](https://circleci.com/gh/josousa82/Job-Scheduler-Manager-SpringBoot.svg?style=shield)](https://circleci.com/gh/josousa82/Job-Scheduler-Manager-SpringBoot/)
   
-#### TravisCI
-* [![Build Status](https://travis-ci.com/josousa82/Template-Repository.svg?branch=master)](https://travis-ci.com/josousa82/Template-Repository) 
 
 ## Getting Started
 
@@ -21,38 +18,96 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 To be able to check the result of the job that you are running as well for testing , 
-the project has MailHog 
+MailHog or another SMTP server should be running on host 127.0.0.0 port 1025.
 
+There are two options to setup MailHog to test the app. You can use either the docker-compose
+file on the project or run the command below on the terminal. 
+Docker must be installed in the machine.
+
+Pulling the image:
 ```
 docker run -d --name mailhog -p 8025:8025 -p 1025:1025 mailhog/mailhog
 
 ```
 
+Running from docker-compose:
+```
+// To start
+docker-compose up -d mailhog
+
+// To Stop 
+docker-compose down
+
+```
+
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+After having the SMTP server running, just run the APP through IDEA 
+or with maven, running in the terminal:
 
 ```
-until finished
+$ ./mvnw clean spring-boot:run
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+To check the local H2 DB just go to :
 
+```
+http://localhost:8080/h2-console/
+
+JDBC URL :  jdbc:h2:mem:jobScheduler
+
+User: admin
+No pass 
+(change the user and pass on the application.properties file)
+```
+
+* [Open API link (Swagger) to test endpoints](http://localhost:8080/swagger-ui.html#)
+
+- http://localhost:8080/swagger-ui.html#
+
+- Cron expression generator 
+* http://www.cronmaker.com
+
+
+Create a new Job:
+
+```
+{
+  "name": "Sender",
+  "subject": "Report email",
+  "messageBody": "Sample report email",
+  "to": ["example@example.com"],
+  "triggers":
+    [
+       {
+         "name": "manager",
+         "group": "email",
+         "cron": "0/10 * * * * ?"
+       }
+    ]
+}
+```
+
+
+Update a job :
+
+```
+{
+  "name": "manager",
+  "subject": "Daily Report emai",
+  "messageBody": "Daily sample report email",
+  "to": ["example@example.com", "example2@example.com", "example2@example.com"],
+  "cc": ["juliuskrah@example.io"]
+}
+```
 ## Running the tests
 
-Explain how to run the automated tests for this system
+WIP
+
 
 ### Break down into end to end tests
 
-Explain what these tests test and why
+WIP
 
 ```
 Give an example
@@ -66,22 +121,20 @@ Explain what these tests test and why
 Give an example
 ```
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [SpringBoot](https://spring.io/) - MVC Framework
+* [Quartz scheduler](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-quartz) - 
+* [Swagger](https://swagger.io/tools/swagger-ui/) 
+* [Docker](https://www.docker.com/products)
+* [MailHog](https://github.com/mailhog/MailHog) - SMTP fake server
+
 
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](link to contibuitions file) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## License
 

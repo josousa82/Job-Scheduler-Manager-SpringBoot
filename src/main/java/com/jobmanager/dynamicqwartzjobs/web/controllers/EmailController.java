@@ -1,4 +1,4 @@
-package com.jobmanager.dynamicqwartzjobs.controllers;
+package com.jobmanager.dynamicqwartzjobs.web.controllers;
 
 import com.jobmanager.dynamicqwartzjobs.model.JobDescriptor;
 import com.jobmanager.dynamicqwartzjobs.services.EmailService;

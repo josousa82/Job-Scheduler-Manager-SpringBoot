@@ -20,9 +20,12 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 What things you need to install the software and how to install them
+To be able to check the result of the job that you are running as well for testing , 
+the project has MailHog 
 
 ```
-Give examples
+docker run -d --name mailhog -p 8025:8025 -p 1025:1025 mailhog/mailhog
+
 ```
 
 ### Installing

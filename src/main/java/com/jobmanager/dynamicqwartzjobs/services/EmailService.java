@@ -1,6 +1,8 @@
-package com.jobmanager.services;
+package com.jobmanager.dynamicqwartzjobs.services;
 
-import com.jobmanager.model.JobDescriptor;
+
+import com.jobmanager.dynamicqwartzjobs.model.JobDescriptor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
@@ -12,19 +14,15 @@ import java.util.Set;
 
 /**
  * Created by sousaJ on 28/10/2020
- * in package - com.jobmanager.services
+ * in package - com.jobmanager.dynamicqwartzjobs.services
  **/
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class EmailService {
 
     private final Scheduler scheduler;
-
-
-    public EmailService(Scheduler scheduler) {
-        this.scheduler = scheduler;
-    }
 
     public JobDescriptor createJob(String group, JobDescriptor descriptor){
         descriptor.setGroup(group);
@@ -93,9 +91,14 @@ public class EmailService {
     }
 
     public void deleteJob(String group, String name){
+
         try{
-            scheduler.deleteJob(JobKey.jobKey(name, group));
-            log.info("Deleted job with key - {}.{}", group, name);
+            Optional<JobDescriptor> descriptor = findJob(group, name);
+
+            if(descriptor.isPresent()) {
+                scheduler.deleteJob(JobKey.jobKey(name, group));
+                log.info("Deleted job with key - {}.{}", group, name);
+            }
 
         } catch (SchedulerException e) {
             log.error("Could not delete job with key {}.{} due to error - {}", group, name, e.getLocalizedMessage());
@@ -112,7 +115,7 @@ public class EmailService {
         }
     }
 
-    public void resumeJob(String group, String name, JobDescriptor descriptor){
+    public void resumeJob(String group, String name){
             try{
                 scheduler.resumeJob(JobKey.jobKey(name, group));
                 log.info("Resumed job with key - {}.{}", group, name);
@@ -120,6 +123,7 @@ public class EmailService {
                 log.error("Could not resume job with key {}.{} due to error - {}", group, name, e.getLocalizedMessage());
             }
     }
+
 }
 
 

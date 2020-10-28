@@ -1,8 +1,8 @@
-package com.jobmanager.model;
+package com.jobmanager.dynamicqwartzjobs.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.jobmanager.jobs.EmailJob;
+import com.jobmanager.dynamicqwartzjobs.jobs.EmailJob;
 import lombok.Data;
 import org.quartz.*;
 
@@ -12,7 +12,7 @@ import java.util.*;
 
 /**
  * Created by sousaJ on 27/10/2020
- * in package - com.jobmanager.model
+ * in package - com.jobmanager.dynamicqwartzjobs.model
  **/
 @Data
 public class JobDescriptor {

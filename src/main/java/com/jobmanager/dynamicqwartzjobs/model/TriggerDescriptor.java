@@ -1,10 +1,10 @@
-package com.jobmanager.model;
+package com.jobmanager.dynamicqwartzjobs.model;
 
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
-import org.springframework.util.*;
+import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
@@ -16,7 +16,7 @@ import static java.util.UUID.randomUUID;
 
 /**
  * Created by sousaJ on 27/10/2020
- * in package - com.jobmanager.model
+ * in package - com.jobmanager.dynamicqwartzjobs.model
  **/
 
 @Slf4j

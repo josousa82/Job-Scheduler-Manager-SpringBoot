@@ -1,4 +1,4 @@
-package com.jobmanager.jobs;
+package com.jobmanager.dynamicqwartzjobs.jobs;
 
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Created by sousaJ on 27/10/2020
- * in package - com.jobmanager.jobs
+ * in package - com.jobmanager.dynamicqwartzjobs.jobs
  **/
 @Slf4j
 public class EmailJob implements Job {

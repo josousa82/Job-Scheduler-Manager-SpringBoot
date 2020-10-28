@@ -106,8 +106,10 @@ public class JobDescriptor {
                 .build();
     }
 
+    @SuppressWarnings("unchecked")
+    public static JobDescriptor buildDescriptor(JobDetail jobDetail, List<? extends Trigger> triggersOfJob) {
 
-    public JobDescriptor buildDescriptor(JobDetail jobDetail, List<? extends Trigger> triggersOfJob) {
+        List<TriggerDescriptor> triggerDescriptors = new ArrayList<>();
 
         for (Trigger trigger : triggersOfJob){
             triggerDescriptors.add(TriggerDescriptor.buildDescriptor(trigger));

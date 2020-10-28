@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 What things you need to install the software and how to install them
-To be able to check the result of the job that you are running as well for testing , 
+to be able to check the result of the job that you are running as well for testing , 
 MailHog or another SMTP server should be running on host 127.0.0.0 port 1025.
 
 There are two options to setup MailHog to test the app. You can use either the docker-compose

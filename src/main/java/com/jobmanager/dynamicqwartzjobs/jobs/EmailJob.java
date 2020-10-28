@@ -48,7 +48,7 @@ public class EmailJob implements Job {
 
             for (String recipient : to) {
 
-                mimeMessageHelper.setFrom("jm.alves.sousa@gmail.com", "Jose quartz tutorial");
+                mimeMessageHelper.setFrom("example@example.com", "example quartz tutorial");
                 mimeMessageHelper.setTo(recipient);
                 mimeMessageHelper.setSubject(subject);
                 mimeMessageHelper.setText(messageBody);
@@ -61,7 +61,7 @@ public class EmailJob implements Job {
                     mimeMessageHelper.setBcc(bcc.toArray(String[]::new));
                 }
 
-                javaMailSender.send(message);
+                this.javaMailSender.send(message);
             }
 
         } catch (MessagingException | UnsupportedEncodingException e) {

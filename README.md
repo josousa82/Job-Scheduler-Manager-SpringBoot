@@ -97,7 +97,7 @@ Update a job :
   "subject": "Daily Report emai",
   "messageBody": "Daily sample report email",
   "to": ["example@example.com", "example2@example.com", "example2@example.com"],
-  "cc": ["juliuskrah@example.io"]
+  "cc": ["example@example.co"]
 }
 ```
 ## Running the tests

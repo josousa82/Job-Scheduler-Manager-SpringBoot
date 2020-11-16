@@ -7,9 +7,9 @@ import org.quartz.*;
 import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.TimeZone;
 
 import static java.util.UUID.randomUUID;
@@ -29,6 +29,102 @@ public class TriggerDescriptor {
     private String group;
     private LocalDateTime fireTime;
     private String cron;
+
+    private  Integer  startHour;
+    private  Integer  startMinutes;
+    private  Integer  startSeconds;
+    private  Integer  startDayOfTheMonth;
+    private  Integer  startMonth;
+    private  Integer  startYear;
+
+    private  Integer  endHour;
+    private  Integer  endMinutes;
+    private  Integer  endSeconds;
+    private  Integer  endDay;
+    private  Integer  endMonth;
+    private  Integer  endYear;
+
+    private Date scheduleStartDate;
+    private Date scheduleEndDate;
+
+    public static  TriggerDescriptor buildDescriptor(Trigger trigger){
+        return new TriggerDescriptor()
+                .setName(trigger.getKey().getName())
+                .setGroup(trigger.getKey().getGroup())
+                .setFireTime((LocalDateTime) trigger.getJobDataMap().get("fireTime"))
+                .setCron(trigger.getJobDataMap().getString("cron"))
+                .setScheduleStartDate(trigger.getStartTime())
+                .setScheduleEndDate(trigger.getEndTime());
+
+    }
+
+    public TriggerDescriptor setScheduleStartDate(Date scheduleStartDate) {
+        this.scheduleStartDate = scheduleStartDate;
+        return this;
+    }
+
+
+//
+//    public TriggerDescriptor setStartHour(Integer startHour) {
+//        this.startHour = startHour;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setStartMinutes(Integer startMinutes) {
+//        this.startMinutes = startMinutes;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setStartSeconds(Integer startSeconds) {
+//        this.startSeconds = startSeconds;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setStartDayOfTheMonth(Integer startDayOfTheMonth) {
+//        this.startDayOfTheMonth = startDayOfTheMonth;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setStartMonth(Integer startMonth) {
+//        this.startMonth = startMonth;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setStartYear(Integer startYear) {
+//        this.startYear = startYear;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setEndHour(Integer endHour) {
+//        this.endHour = endHour;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setEndMinutes(Integer endMinutes) {
+//        this.endMinutes = endMinutes;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setEndSeconds(Integer endSeconds) {
+//        this.endSeconds = endSeconds;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setEndDay(Integer endDay) {
+//        this.endDay = endDay;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setEndMonth(Integer endMonth) {
+//        this.endMonth = endMonth;
+//        return this;
+//    }
+//
+//    public TriggerDescriptor setEndYear(Integer endYear) {
+//        this.endYear = endYear;
+//        return this;
+//    }
+
 
     public TriggerDescriptor setName(String name) {
         this.name = name;
@@ -54,7 +150,15 @@ public class TriggerDescriptor {
         return StringUtils.isEmpty(name) ? randomUUID().toString() : name;
     }
 
-    public Trigger buildTrigger(){
+    public TriggerDescriptor setScheduleEndDate(Date scheduleEndDate) {
+        this.scheduleEndDate = scheduleEndDate;
+        return this;
+    }
+
+    public Trigger buildTrigger() {
+        scheduleStartDate = DateBuilder.dateOf(startHour, startMinutes, startSeconds, startDayOfTheMonth, startMonth, startYear);
+        scheduleEndDate = DateBuilder.dateOf(endHour, endMinutes, endSeconds, endDay, endMonth, endYear);
+
         if(!StringUtils.isEmpty(cron)){
             if(!CronExpression.isValidExpression(cron)){
 
@@ -68,6 +172,8 @@ public class TriggerDescriptor {
                                                     .withMisfireHandlingInstructionFireAndProceed()
                                                     .inTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault())))
                     .usingJobData("cron", cron)
+                    .startAt(scheduleStartDate)
+                    .endAt(scheduleEndDate)
                     .build();
         } else if (!StringUtils.isEmpty(fireTime)){
 
@@ -90,13 +196,6 @@ public class TriggerDescriptor {
 
         throw new IllegalStateException("Unsupported trigger descriptor " + this);
     }
-
-    public static  TriggerDescriptor buildDescriptor(Trigger trigger){
-        return new TriggerDescriptor()
-                .setName(trigger.getKey().getName())
-                .setGroup(trigger.getKey().getGroup())
-                .setFireTime((LocalDateTime) trigger.getJobDataMap().get("fireTime"))
-                .setCron(trigger.getJobDataMap().getString("cron"));
-    }
-
 }
+
+
